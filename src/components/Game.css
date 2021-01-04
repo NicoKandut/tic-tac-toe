@@ -1,0 +1,66 @@
+.game .history {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  gap: 20px;
+  overflow-x: scroll;
+}
+
+.game .history .board {
+  width: 100px;
+  height: 100px;
+}
+
+.game .history .no-matches {
+  width: 100%;
+  height: 100px;
+  display: grid;
+  place-items: center;
+  color: lightgray;
+  font-size: 32px;
+}
+
+.game .score {
+  display: flex;
+  gap: 10px;
+  color: lightgray;
+  font-size: 72px;
+  font-weight: bold;
+  filter: drop-shadow(0 5px 0 gray);
+}
+
+.game .score .x {
+  color: tomato;
+}
+
+.game .score .o {
+  color: cornflowerblue;
+}
+
+.game .board-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.continue {
+  font-size: 32px;
+  padding: 10px 20px;
+  background-color: lightgray;
+  border: none;
+  border-radius: 5px;
+  filter: drop-shadow(0 5px 0 gray);
+  transition: all 0.2s linear;
+}
+
+.continue:hover {
+  top: 2px;
+  background-color: rgb(224, 223, 223);
+}
+
+.game .board-container .board {
+  width: 400px;
+  height: 400px;
+}

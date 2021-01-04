@@ -1,0 +1,17 @@
+.mark circle,
+.mark line {
+  fill: transparent;
+}
+
+.mark.x .shape line {
+  stroke: tomato;
+}
+
+.mark.o .shape circle {
+  stroke: cornflowerblue;
+}
+
+.mark.x .shadow line,
+.mark.o .shadow circle {
+  stroke: gray;
+}
