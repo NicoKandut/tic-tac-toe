@@ -1,13 +1,13 @@
 .board-wrapper {
   position: relative;
-  border: 5px gray solid;
-  border-radius: 5px;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  border: 5px gray solid;
+  border-radius: 5px;
 }
 
 .endscreen {

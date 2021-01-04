@@ -1,15 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 import theme from "../common/theme";
+import { FaCodeBranch, FaGithub, FaPen } from "react-icons/fa";
 
 const FooterGrid = styled.footer`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
   margin-bottom: ${theme.gap};
+  color: lightgray;
+
+  div {
+    transition: color 0.2s linear;
+    color: lightgray;
+
+    :hover {
+      color: teal;
+    }
+  }
+
+  a {
+    color: lightgray;
+    text-decoration: none;
+
+    :visited {
+      color: lightgray;
+    }
+
+    :hover {
+      color: teal;
+    }
+  }
 `;
 
 const FooterItem = styled.div`
   display: flex;
+  gap: 5px;
 
   :nth-of-type(odd) {
     flex-direction: row;
@@ -24,10 +50,16 @@ export default function Footer() {
   return (
     <FooterGrid>
       <FooterItem>
-        <span>ABC</span>
+        <FaPen />
+        <span>Nico Kandut</span>
       </FooterItem>
       <FooterItem>
-        <span>XYZ</span>
+        <FaCodeBranch />
+        <span>0.1.6</span>
+      </FooterItem>
+      <FooterItem>
+        <FaGithub />
+        <a href="https://github.com/NicoKandut/tic-tac-toe">Repository</a>
       </FooterItem>
     </FooterGrid>
   );

@@ -1,31 +1,32 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+
 import { getWinner } from "../main/gameLogic";
 import Instruction, { ControlInstruction } from "../main/Instruction";
+import { stringify } from "../main/invite";
 import Player, { inverseOf } from "../main/Player";
 import usePeerConnection from "../main/usePeerConnection";
+import useInvite from "../main/useQuery";
 import Board from "./Board";
 import FlexColumn from "./common/FlexColumn";
+import History from "./History";
 import "./Game.css";
+import FlexRow from "./common/FlexRow";
+import styled from "styled-components";
 
-type GameParams = {
-  roomId: string;
-  playerId: Player;
-};
+const ScoreRow = styled(FlexRow)`
+  justify-content: space-between;
+`;
 
 export default function Game() {
-  const { roomId, playerId } = useParams<GameParams>();
+  const { roomId, playerId } = useInvite();
   const [tiles, setTiles] = useState(new Array<Player>(9).fill(Player.NONE));
   const [games, setGames] = useState(new Array<[Player, Array<Player>]>());
   const [winner, setWinner] = useState<Player | null>(null);
   const [player, setPlayer] = useState(Player.X);
-
-  console.log("RENDER Game");
   const connection = usePeerConnection(roomId, playerId);
 
   const processTurn = useCallback(
     (index, doNotSend: boolean | undefined) => {
-      console.log("Processturn");
       const newTiles = tiles;
       newTiles.splice(index, 1, player);
       setTiles(newTiles);
@@ -35,7 +36,6 @@ export default function Game() {
       setWinner(winner);
 
       if (!doNotSend) {
-        console.log("SENDING:", index);
         connection?.send(index);
       }
     },
@@ -66,7 +66,6 @@ export default function Game() {
       }
 
       if (!doNotSend) {
-        console.log("SENDING:", instruction);
         connection?.send(instruction);
       }
     },
@@ -94,10 +93,7 @@ export default function Game() {
   useEffect(() => {
     const conn = connection;
 
-    console.log("DATA HANDLER:", conn);
     const handler = (data: Instruction) => {
-      console.log("DATA");
-
       if (typeof data === "number") processTurn(data, true);
       else if (typeof data === "string") processControl(data, true);
     };
@@ -119,38 +115,44 @@ export default function Game() {
 
   return (
     <FlexColumn className="game">
-      <div className="history">
-        {games.length > 0 ? (
-          games.map(([winner, tiles], index) => (
-            <div key={index}>
-              <span></span>
-              <Board tiles={tiles} winner={winner} processTurn={() => {}} />
-            </div>
-          ))
-        ) : (
-          <div className="no-matches">
-            <span>No matches played yet...</span>
-          </div>
-        )}
-      </div>
+      <History games={games} />
       <div>
         {connection ? (
-          <span>Connected</span>
+          <span className="connected">Connected</span>
         ) : (
           <>
-            <span>Invite link: </span>
+            <span className="invite">Invite link: </span>
             <code onClick={selectLink}>{`${
-              window.location.host
-            }/${roomId}/${inverseOf(playerId)}`}</code>
+              window.location.host + process.env.PUBLIC_URL
+            }?i=${stringify({ roomId, playerId: inverseOf(playerId) })}`}</code>
           </>
         )}
       </div>
-      <div className="score">
-        <span className="x">{score[Player.X]}</span>
-        <span>-</span>
-        <span className="o">{score[Player.O]}</span>
-      </div>
+
       <main className="board-container">
+        <ScoreRow>
+          {}
+          <div className="turn">
+            {winner ? (
+              <span className={winner}>
+                {winner === Player.NONE
+                  ? "Draw"
+                  : winner === playerId
+                  ? "You win"
+                  : "You lose"}
+              </span>
+            ) : (
+              <span className={player}>
+                {player === playerId ? "Your turn" : "Opponent's turn"}
+              </span>
+            )}
+          </div>
+          <div className="score">
+            <span className="x">{score[Player.X]}</span>
+            <span>-</span>
+            <span className="o">{score[Player.O]}</span>
+          </div>
+        </ScoreRow>
         <Board tiles={tiles} winner={winner} processTurn={doTurn} />
         {winner && (
           <button className="continue" onClick={processReset}>

@@ -6,11 +6,13 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Welcome from "./components/pages/Welcome";
 import Game from "./components/Game";
+import theme from "./components/common/theme";
 
 const AppFlexColumn = styled(FlexColumn)`
   > * {
     width: 100%;
     max-width: 1000px;
+    padding: ${theme.gap};
   }
 `;
 
@@ -18,12 +20,12 @@ function App() {
   return (
     <AppFlexColumn>
       <Header />
-      <Router>
+      <Router basename="/tic-tac-toe">
         <Switch>
-          <Route path="/:roomId/:playerId">
+          <Route path={`/versus`}>
             <Game />
           </Route>
-          <Route path="/">
+          <Route path={`/`}>
             <Welcome />
           </Route>
         </Switch>
