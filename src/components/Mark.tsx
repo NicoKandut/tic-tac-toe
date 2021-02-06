@@ -19,7 +19,7 @@ const PlayerColorSvg = styled.svg(
       }
 
       .shadow * {
-        stroke: gray;
+        stroke: var(--shadow);
       }
     `
 );

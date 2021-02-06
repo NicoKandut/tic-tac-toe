@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FlexColumn from "./components/common/FlexColumn";
 import styled from "styled-components";
@@ -10,10 +10,12 @@ import Versus from "./components/pages/Versus";
 import Local from "./components/pages/Local";
 
 const AppFlexColumn = styled(FlexColumn)`
+  padding: ${theme.gap};
+  gap: ${theme.gap};
+
   > * {
     width: 100%;
     max-width: 1000px;
-    padding: ${theme.gap};
   }
 `;
 

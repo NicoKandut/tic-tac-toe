@@ -5,6 +5,6 @@ export default styled.div`
   height: 100px;
   display: grid;
   place-items: center;
-  color: lightgray;
+  color: var(--text2);
   font-size: 32px;
 `;

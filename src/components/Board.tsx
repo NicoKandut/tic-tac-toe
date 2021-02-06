@@ -19,9 +19,9 @@ const BoardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  border: 5px gray solid;
+  border: 5px var(--shadow) solid;
   border-radius: 5px;
-  background: gray;
+  background-color: var(--shadow);
 `;
 
 const Overlay = styled.div(

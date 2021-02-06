@@ -3,6 +3,10 @@ import { Link, Redirect } from "react-router-dom";
 import { useRawInvite } from "../../main/useQuery";
 import Main from "../common/Main";
 
+export function generateRoomId() {
+  return btoa(new Date().getTime().toString().substr(6)).replace(/=+/, "");
+}
+
 export default function Welcome() {
   const invite = useRawInvite();
 

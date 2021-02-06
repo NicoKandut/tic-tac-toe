@@ -8,11 +8,11 @@ const FooterGrid = styled.footer`
   grid-template-columns: repeat(2, 1fr);
   gap: 5px;
   margin-bottom: ${theme.gap};
-  color: lightgray;
+  color: var(--text2);
 
   div {
     transition: color 0.2s linear;
-    color: lightgray;
+    color: var(--text2);
 
     :hover {
       color: teal;
@@ -20,11 +20,11 @@ const FooterGrid = styled.footer`
   }
 
   a {
-    color: lightgray;
+    color: var(--text2);
     text-decoration: none;
 
     :visited {
-      color: lightgray;
+      color: var(--text2);
     }
 
     :hover {
