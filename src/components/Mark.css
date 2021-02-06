@@ -13,5 +13,5 @@
 
 .mark.x .shadow line,
 .mark.o .shadow circle {
-  stroke: gray;
+  stroke: var(--shadow);
 }

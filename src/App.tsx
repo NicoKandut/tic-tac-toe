@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FlexColumn from "./components/common/FlexColumn";
 import styled from "styled-components";
@@ -9,18 +9,20 @@ import Game from "./components/Game";
 import theme from "./components/common/theme";
 
 const AppFlexColumn = styled(FlexColumn)`
+  padding: ${theme.gap};
+  gap: ${theme.gap};
+
   > * {
     width: 100%;
     max-width: 1000px;
-    padding: ${theme.gap};
   }
 `;
 
 function App() {
   return (
     <AppFlexColumn>
-      <Header />
       <Router basename="/tic-tac-toe">
+        <Header />
         <Switch>
           <Route path={`/versus`}>
             <Game />

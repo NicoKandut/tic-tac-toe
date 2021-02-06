@@ -8,11 +8,37 @@ body,
   box-sizing: border-box;
 }
 
-body {
+body, h1 {
   margin: 0;
+}
+
+body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --bg1: #ffffff;
+  --bg2: #d3d3d3;
+  --text1: #000000;
+  --text2: #d3d3d3;
+  --shadow: #808080;
+  --tile1: #dac0a0;
+  --tile2: #b6a086;
+
+  background-color: var(--bg1);
+  color: var(--text1);
+
+  transition: background-color 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+body.dark {
+  --bg1: #111111;
+  --bg2: #222222;
+  --text1: #dddddd;
+  --text2: #393939;
+  --shadow: #444444;
+  --tile1: #63584b;
+  --tile2: #443b31;
 }
 
 code {

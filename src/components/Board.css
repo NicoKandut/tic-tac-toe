@@ -6,8 +6,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  border: 5px gray solid;
+  border: 5px var(--shadow) solid;
   border-radius: 5px;
+  background-color: var(--shadow);
 }
 
 .endscreen {
@@ -39,5 +40,5 @@
 .endscreen .draw {
   font-size: 32px;
   color: gold;
-  filter: drop-shadow(0 3px 0 gray);
+  filter: drop-shadow(0 3px 0 var(--shadow));
 }

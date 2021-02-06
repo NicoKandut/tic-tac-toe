@@ -4,7 +4,7 @@ import { stringify } from "../../main/invite";
 import Player from "../../main/Player";
 import { useRawInvite } from "../../main/useQuery";
 
-function generateRoomId() {
+export function generateRoomId() {
   return btoa(new Date().getTime().toString().substr(6)).replace(/=+/, "");
 }
 

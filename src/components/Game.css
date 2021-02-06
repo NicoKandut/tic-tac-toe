@@ -18,13 +18,15 @@
   height: 100px;
   display: grid;
   place-items: center;
-  color: lightgray;
+  color: var(--text2);
   font-size: 32px;
+  user-select: none;
 }
 
 .game .turn {
   font-size: 32px;
   font-weight: bold;
+  user-select: none;
 }
 
 .turn .x {
@@ -42,10 +44,11 @@
 .game .score {
   display: flex;
   gap: 10px;
-  color: lightgray;
+  color: var(--text2);
   font-size: 72px;
   font-weight: bold;
-  filter: drop-shadow(0 5px 0 gray);
+  filter: drop-shadow(0 5px 0 var(--shadow));
+  user-select: none;
 }
 
 .game .score .x {
@@ -74,11 +77,12 @@
 
 .game .invite {
   font-size: 20px;
+  user-select: none;
 }
 
 .game code {
   font-size: 20px;
-  background-color: rgb(235, 235, 235);
+  background-color: var(--bg2);
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -86,16 +90,16 @@
 .continue {
   font-size: 32px;
   padding: 10px 20px;
-  background-color: lightgray;
+  background-color: var(--bg2);
   border: none;
   border-radius: 5px;
-  filter: drop-shadow(0 5px 0 gray);
+  filter: drop-shadow(0 5px 0 var(--shadow));
   transition: all 0.2s linear;
 }
 
 .continue:hover {
   top: 2px;
-  background-color: rgb(224, 223, 223);
+  opacity: 0.9;
 }
 
 .game .board-container .board {

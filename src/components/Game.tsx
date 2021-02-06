@@ -44,11 +44,11 @@ export default function Game() {
 
   const doTurn = useCallback(
     (index: number, doNotSend: boolean | undefined) => {
-      if (player === playerId) {
+      if (connection && player === playerId) {
         processTurn(index, doNotSend);
       }
     },
-    [player, playerId, processTurn]
+    [connection, player, playerId, processTurn]
   );
 
   const reset = useCallback(() => {
