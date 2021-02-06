@@ -1,13 +1,35 @@
 import React from "react";
+import styled, { css } from "styled-components";
 import Player from "../main/Player";
-import "./Mark.css";
+import theme from "./common/theme";
 
-export default function Mark({ type }: { type: Player }) {
+interface MarkProps {
+  type: Player;
+}
+
+const PlayerColorSvg = styled.svg(
+  (props: MarkProps) =>
+    css`
+      * {
+        fill: transparent;
+      }
+
+      .shape * {
+        stroke: ${props.type === Player.X ? theme.red : theme.blue};
+      }
+
+      .shadow * {
+        stroke: gray;
+      }
+    `
+);
+
+export default function Mark({ type }: MarkProps) {
   return (
-    <svg
+    <PlayerColorSvg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 12 12"
-      className={`mark ${type}`}
+      type={type}
     >
       {type === Player.X ? (
         <>
@@ -30,6 +52,6 @@ export default function Mark({ type }: { type: Player }) {
           </g>
         </>
       )}
-    </svg>
+    </PlayerColorSvg>
   );
 }

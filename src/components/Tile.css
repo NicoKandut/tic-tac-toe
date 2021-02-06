@@ -1,9 +1,0 @@
-.tile {
-  padding: 10%;
-  display: grid;
-  background-color: rgb(218, 192, 160);
-}
-
-.tile:nth-of-type(even) {
-  background-color: rgb(182, 160, 134);
-}

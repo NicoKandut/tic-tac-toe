@@ -5,8 +5,9 @@ import styled from "styled-components";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Welcome from "./components/pages/Welcome";
-import Game from "./components/Game";
 import theme from "./components/common/theme";
+import Versus from "./components/pages/Versus";
+import Local from "./components/pages/Local";
 
 const AppFlexColumn = styled(FlexColumn)`
   > * {
@@ -18,20 +19,23 @@ const AppFlexColumn = styled(FlexColumn)`
 
 function App() {
   return (
-    <AppFlexColumn>
-      <Header />
-      <Router basename="/tic-tac-toe">
+    <Router basename="/tic-tac-toe">
+      <AppFlexColumn>
+        <Header />
         <Switch>
+          <Route path={`/local`}>
+            <Local />
+          </Route>
           <Route path={`/versus`}>
-            <Game />
+            <Versus />
           </Route>
           <Route path={`/`}>
             <Welcome />
           </Route>
         </Switch>
-      </Router>
-      <Footer />
-    </AppFlexColumn>
+        <Footer />
+      </AppFlexColumn>
+    </Router>
   );
 }
 

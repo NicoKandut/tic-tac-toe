@@ -1,12 +1,12 @@
 import Player from "./Player";
 
 export interface Invite {
-  roomId: string;
+  roomId: string | undefined;
   playerId: Player;
 }
 
-export function parse(invite: string): Invite {
-  const [roomId, playerId] = atob(invite).split(":");
+export function parse(invite: string | null): Invite {
+  const [roomId, playerId] = atob(decodeURI(invite || "")).split(":");
 
   return {
     roomId,
@@ -15,5 +15,5 @@ export function parse(invite: string): Invite {
 }
 
 export function stringify(invite: Invite) {
-  return btoa(`${invite.roomId}:${invite.playerId}`);
+  return encodeURI(btoa(`${invite.roomId}:${invite.playerId}`));
 }

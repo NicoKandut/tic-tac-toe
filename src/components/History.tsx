@@ -1,30 +1,40 @@
 import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
 import Player from "../main/Player";
 import Board from "./Board";
+import PlaceholderMessage from "./common/PlaceholderMessage";
+import ScrollableFlexRow from "./common/ScrollableFlexRow";
+
+const HistoryBoard = styled(Board)`
+  width: 100px;
+  height: 100px;
+`;
 
 export default function History({ games }: { games: [Player, Player[]][] }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (scrollRef && scrollRef.current) {
-      scrollRef.current.scrollLeft = scrollRef?.current?.scrollWidth;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
     }
   }, [games]);
 
   return (
-    <div className="history" ref={scrollRef}>
+    <ScrollableFlexRow ref={scrollRef}>
       {games.length > 0 ? (
         games.map(([winner, tiles], index) => (
-          <div key={index}>
-            <span></span>
-            <Board tiles={tiles} winner={winner} processTurn={() => {}} />
-          </div>
+          <HistoryBoard
+            key={index}
+            tiles={tiles}
+            winner={winner}
+            processTurn={() => {}}
+          />
         ))
       ) : (
-        <div className="no-matches">
+        <PlaceholderMessage>
           <span>No matches played yet...</span>
-        </div>
+        </PlaceholderMessage>
       )}
-    </div>
+    </ScrollableFlexRow>
   );
 }

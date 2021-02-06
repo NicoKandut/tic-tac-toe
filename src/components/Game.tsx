@@ -1,32 +1,42 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import styled from "styled-components";
 
+import FlexColumn from "./common/FlexColumn";
+import FlexRow from "./common/FlexRow";
 import { getWinner } from "../main/gameLogic";
 import Instruction, { ControlInstruction } from "../main/Instruction";
 import { stringify } from "../main/invite";
 import Player, { inverseOf } from "../main/Player";
-import usePeerConnection from "../main/usePeerConnection";
-import useInvite from "../main/useQuery";
 import Board from "./Board";
-import FlexColumn from "./common/FlexColumn";
 import History from "./History";
+
 import "./Game.css";
-import FlexRow from "./common/FlexRow";
-import styled from "styled-components";
+import Main from "./common/Main";
+import Connection from "../@types/Connection";
+import GameType from "../main/GameType";
 
 const ScoreRow = styled(FlexRow)`
   justify-content: space-between;
 `;
 
-export default function Game() {
-  const { roomId, playerId } = useInvite();
+export default function Game({
+  type,
+  playerId,
+  connection,
+  peerId,
+}: {
+  type: GameType;
+  playerId: Player;
+  connection: Connection | null;
+  peerId: string;
+}) {
   const [tiles, setTiles] = useState(new Array<Player>(9).fill(Player.NONE));
   const [games, setGames] = useState(new Array<[Player, Array<Player>]>());
   const [winner, setWinner] = useState<Player | null>(null);
   const [player, setPlayer] = useState(Player.X);
-  const connection = usePeerConnection(roomId, playerId);
 
   const processTurn = useCallback(
-    (index, doNotSend: boolean | undefined) => {
+    (index, shouldSend: boolean | undefined) => {
       const newTiles = tiles;
       newTiles.splice(index, 1, player);
       setTiles(newTiles);
@@ -35,20 +45,20 @@ export default function Game() {
       const winner = getWinner(tiles);
       setWinner(winner);
 
-      if (!doNotSend) {
+      if (type === GameType.VERSUS && shouldSend) {
         connection?.send(index);
       }
     },
-    [connection, player, tiles]
+    [connection, player, tiles, type]
   );
 
   const doTurn = useCallback(
-    (index: number, doNotSend: boolean | undefined) => {
-      if (player === playerId) {
-        processTurn(index, doNotSend);
+    (index: number, shouldSend: boolean | undefined) => {
+      if (player === playerId || type === GameType.LOCAL) {
+        processTurn(index, shouldSend);
       }
     },
-    [player, playerId, processTurn]
+    [player, playerId, processTurn, type]
   );
 
   const reset = useCallback(() => {
@@ -60,16 +70,16 @@ export default function Game() {
   }, [games, tiles, winner]);
 
   const processControl = useCallback(
-    (instruction: ControlInstruction, doNotSend: boolean | undefined) => {
+    (instruction: ControlInstruction, shouldSend: boolean | undefined) => {
       if (instruction === "reset") {
         reset();
       }
 
-      if (!doNotSend) {
+      if (type === GameType.VERSUS && shouldSend) {
         connection?.send(instruction);
       }
     },
-    [connection, reset]
+    [connection, reset, type]
   );
 
   const processReset = useCallback(() => {
@@ -94,7 +104,7 @@ export default function Game() {
     const conn = connection;
 
     const handler = (data: Instruction) => {
-      if (typeof data === "number") processTurn(data, true);
+      if (typeof data === "number") processTurn(data, false);
       else if (typeof data === "string") processControl(data, true);
     };
 
@@ -118,20 +128,28 @@ export default function Game() {
       <History games={games} />
       <div>
         {connection ? (
-          <span className="connected">Connected</span>
+          connection.status === "ERROR" ? (
+            <span className="error">Error</span>
+          ) : connection.status === "CLOSED" ? (
+            <span className="closed">Closed</span>
+          ) : (
+            <span className="connected">Connected</span>
+          )
         ) : (
           <>
             <span className="invite">Invite link: </span>
-            <code onClick={selectLink}>{`${
+            <code onClick={selectLink}>{`https://${
               window.location.host + process.env.PUBLIC_URL
-            }?i=${stringify({ roomId, playerId: inverseOf(playerId) })}`}</code>
+            }?i=${stringify({
+              roomId: peerId,
+              playerId: inverseOf(playerId),
+            })}`}</code>
           </>
         )}
       </div>
 
-      <main className="board-container">
+      <Main className="board-container">
         <ScoreRow>
-          {}
           <div className="turn">
             {winner ? (
               <span className={winner}>
@@ -159,7 +177,7 @@ export default function Game() {
             Again
           </button>
         )}
-      </main>
+      </Main>
     </FlexColumn>
   );
 }

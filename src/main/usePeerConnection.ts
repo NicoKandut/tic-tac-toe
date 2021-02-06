@@ -1,46 +1,64 @@
-import Peer, { DataConnection } from "peerjs";
+import Peer from "peerjs";
 import { useEffect, useState } from "react";
-import Player, { inverseOf } from "./Player";
-
-const ID_PREFIX = "haleluni-ttt-";
-
-function getPeerId(roomId: string, playerId: Player) {
-  return ID_PREFIX + roomId + playerId;
-}
+import Connection from "../@types/Connection";
+import Player from "./Player";
 
 export default function usePeerConnection(
-  roomId: string,
-  playerId: Player
-): DataConnection | null {
-  const [connection, setConnection] = useState<DataConnection | null>(null);
+  playerId: Player,
+  host: string | undefined
+): {
+  connection: Connection | null;
+  peerId: string;
+} {
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const [peerId, setPeerId] = useState("");
 
   useEffect(() => {
-    const peer = new Peer(getPeerId(roomId, playerId));
+    const peer = new Peer();
 
     peer.on("error", (err) => {
       console.error("ERROR:", err);
     });
 
-    // O is the second player. Once they accept the invite they take care of connecting to X.
-    if (playerId === Player.O) {
-      peer.on("open", () => {
-        const destination = getPeerId(roomId, inverseOf(playerId));
-        const conn = peer.connect(destination);
-        setConnection(conn);
-      });
-    }
+    peer.on("open", (id) => {
+      setPeerId(id);
+      console.debug("Peer Id:", id);
 
-    // X will get the connection attempt from O and expose the connection as well
-    else {
+      // connect to host if possible
+      if (host) {
+        console.debug("Role: HOST");
+        const conn = peer.connect(host);
+
+        setConnection(conn);
+        conn.on("error", () => {
+          setConnection({ ...conn, status: "ERROR" });
+        });
+        conn.on("close", () => {
+          setConnection({ ...conn, status: "CLOSED" });
+        });
+
+        console.debug("Connection established", conn);
+      }
+    });
+
+    if (!host) {
+      console.debug("Role: CLIENT");
       peer.on("connection", (conn) => {
         setConnection(conn);
+        conn.on("error", () => {
+          setConnection({ ...conn, status: "ERROR" });
+        });
+        conn.on("close", () => {
+          setConnection({ ...conn, status: "CLOSED" });
+        });
+        console.debug("Connection established", conn);
       });
     }
 
     return () => {
       peer.destroy();
     };
-  }, [playerId, roomId]);
+  }, [playerId, host]);
 
-  return connection;
+  return { connection, peerId };
 }

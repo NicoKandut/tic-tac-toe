@@ -1,21 +1,58 @@
 import React from "react";
 import Player from "../main/Player";
 import Tile from "./Tile";
-import "./Board.css";
 import Mark from "./Mark";
+import styled, { css } from "styled-components";
+import theme from "./common/theme";
 
-export default function Board({
-  tiles,
-  processTurn,
-  winner,
-}: {
+interface BoardProps {
   tiles: Player[];
-  processTurn: (index: number, doNotSend: boolean | undefined) => void;
+  processTurn: (index: number, shouldSend: boolean | undefined) => void;
   winner: Player | null;
-}) {
+}
+
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const BoardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 5px gray solid;
+  border-radius: 5px;
+  background: gray;
+`;
+
+const Overlay = styled.div(
+  ({ winner }: Pick<BoardProps, "winner">) => css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    ${winner
+      ? { x: theme.semiRed, o: theme.semiBlue, none: theme.semiYellow }[winner]
+      : ""};
+  `
+);
+
+const OverlayMark = styled(Mark)`
+  max-width: 60%;
+`;
+
+const DrawText = styled.span`
+  font-size: 32px;
+  color: gold;
+  filter: drop-shadow(0 3px 0 gray);
+`;
+
+export default function Board({ tiles, processTurn, winner }: BoardProps) {
   return (
-    <div className="board-wrapper">
-      <div className="board">
+    <Wrapper>
+      <BoardGrid className="board">
         {tiles.map((tile, index) => (
           <Tile
             key={index}
@@ -24,16 +61,16 @@ export default function Board({
             processTurn={processTurn}
           />
         ))}
-      </div>
+      </BoardGrid>
       {winner && (
-        <div className={`endscreen ${winner}`}>
+        <Overlay winner={winner}>
           {winner === Player.NONE ? (
-            <span className="draw">Draw</span>
+            <DrawText>Draw</DrawText>
           ) : (
-            <Mark type={winner} />
+            <OverlayMark type={winner} />
           )}
-        </div>
+        </Overlay>
       )}
-    </div>
+    </Wrapper>
   );
 }
