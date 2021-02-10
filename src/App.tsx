@@ -9,20 +9,21 @@ import theme from "./components/common/theme";
 import Versus from "./components/pages/Versus";
 import Local from "./components/pages/Local";
 
-const AppFlexColumn = styled(FlexColumn)`
+const AppLayout = styled.div`
+  display: grid;
   padding: ${theme.gap};
   gap: ${theme.gap};
-
-  > * {
-    width: 100%;
-    max-width: 1000px;
-  }
+  max-width: 1000px;
+  margin: auto;
+  min-height: 100vh;
+  max-height: 100vh;
+  grid-template-rows: repeat(4, auto) 1fr auto;
 `;
 
 function App() {
   return (
     <Router basename="/tic-tac-toe">
-      <AppFlexColumn>
+      <AppLayout>
         <Header />
         <Switch>
           <Route path={`/local`}>
@@ -36,7 +37,7 @@ function App() {
           </Route>
         </Switch>
         <Footer />
-      </AppFlexColumn>
+      </AppLayout>
     </Router>
   );
 }

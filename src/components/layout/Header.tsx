@@ -17,6 +17,7 @@ const HeaderRow = styled.header`
     a {
       color: var(--text2);
       text-decoration: none;
+      min-width: fit-content;
 
       :visited {
         color: var(--text2);
@@ -25,6 +26,19 @@ const HeaderRow = styled.header`
       :hover {
         color: teal;
       }
+    }
+  }
+
+  a {
+    color: var(--text1);
+    text-decoration: none;
+
+    :visited {
+      color: var(--text1);
+    }
+
+    :hover {
+      color: var(--text1);
     }
   }
 `;
@@ -44,8 +58,9 @@ export default function Header() {
               playerId: Player.X,
             })}`}
           >
-            Versus
+            Online Versus
           </Link>
+          <Link to="/local">Local Versus</Link>
         </nav>
       </div>
       <DarkModeButton />

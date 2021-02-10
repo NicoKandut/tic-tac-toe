@@ -4,6 +4,7 @@ import Tile from "./Tile";
 import Mark from "./Mark";
 import styled, { css } from "styled-components";
 import theme from "./common/theme";
+import FlexRow from "./common/FlexRow";
 
 interface BoardProps {
   tiles: Player[];
@@ -11,11 +12,17 @@ interface BoardProps {
   winner: Player | null;
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(FlexRow)`
   position: relative;
+  place-content: center;
 `;
 
 const BoardGrid = styled.div`
+  max-height: 100%;
+  max-width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -51,7 +58,7 @@ const DrawText = styled.span`
 
 export default function Board({ tiles, processTurn, winner }: BoardProps) {
   return (
-    <Wrapper>
+    <Wrapper className="wrapper">
       <BoardGrid className="board">
         {tiles.map((tile, index) => (
           <Tile
@@ -62,6 +69,7 @@ export default function Board({ tiles, processTurn, winner }: BoardProps) {
           />
         ))}
       </BoardGrid>
+
       {winner && (
         <Overlay winner={winner}>
           {winner === Player.NONE ? (

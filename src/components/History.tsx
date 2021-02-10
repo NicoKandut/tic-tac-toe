@@ -5,9 +5,12 @@ import Board from "./Board";
 import PlaceholderMessage from "./common/PlaceholderMessage";
 import ScrollableFlexRow from "./common/ScrollableFlexRow";
 
-const HistoryBoard = styled(Board)`
+const NO_OP = () => {};
+
+const HistoryBoardWrapper = styled.div`
   width: 100px;
   height: 100px;
+  display: flex;
 `;
 
 export default function History({ games }: { games: [Player, Player[]][] }) {
@@ -23,12 +26,9 @@ export default function History({ games }: { games: [Player, Player[]][] }) {
     <ScrollableFlexRow ref={scrollRef}>
       {games.length > 0 ? (
         games.map(([winner, tiles], index) => (
-          <HistoryBoard
-            key={index}
-            tiles={tiles}
-            winner={winner}
-            processTurn={() => {}}
-          />
+          <HistoryBoardWrapper key={index}>
+            <Board tiles={tiles} winner={winner} processTurn={NO_OP} />
+          </HistoryBoardWrapper>
         ))
       ) : (
         <PlaceholderMessage>

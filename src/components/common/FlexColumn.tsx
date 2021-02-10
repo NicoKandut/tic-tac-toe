@@ -7,4 +7,5 @@ export default styled.div`
   align-items: center;
   height: 100%;
   gap: ${theme.gap};
+  max-width: 100%;
 `;

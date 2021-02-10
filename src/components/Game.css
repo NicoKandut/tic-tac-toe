@@ -1,4 +1,4 @@
-.game .turn {
+.turn {
   font-size: 32px;
   font-weight: bold;
   user-select: none;
@@ -16,7 +16,7 @@
   color: gold;
 }
 
-.game .score {
+.score {
   display: flex;
   gap: 10px;
   color: var(--text2);
@@ -26,23 +26,24 @@
   user-select: none;
 }
 
-.game .score .x {
+.score .x {
   color: tomato;
 }
 
-.game .score .o {
+.score .o {
   color: cornflowerblue;
 }
 
-.game .board-container {
+.board-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
   gap: 20px;
 }
 
-.game .connected {
+.connected {
   font-size: 20px;
   color: teal;
   background-color: rgba(0, 128, 128, 0.3);
@@ -50,13 +51,13 @@
   border-radius: 5px;
 }
 
-.game .invite {
-  font-size: 20px;
+.invite {
+  font-size: 16px;
   user-select: none;
 }
 
-.game code {
-  font-size: 20px;
+code {
+  font-size: 16px;
   background-color: var(--bg2);
   padding: 5px 10px;
   border-radius: 5px;
@@ -77,7 +78,7 @@
   opacity: 0.9;
 }
 
-.game .board-container .board {
-  width: 400px;
-  height: 400px;
+.board-container .board {
+  max-width: 100%;
+  max-height: 100%;
 }

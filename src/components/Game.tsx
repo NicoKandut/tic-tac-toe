@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-
-import FlexColumn from "./common/FlexColumn";
 import FlexRow from "./common/FlexRow";
 import { getWinner } from "../main/gameLogic";
 import Instruction, { ControlInstruction } from "../main/Instruction";
@@ -11,12 +9,17 @@ import Board from "./Board";
 import History from "./History";
 
 import "./Game.css";
-import Main from "./common/Main";
 import Connection from "../@types/Connection";
 import GameType from "../main/GameType";
 
 const ScoreRow = styled(FlexRow)`
   justify-content: space-between;
+`;
+
+const ConnectionRow = styled(FlexRow)`
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 `;
 
 export default function Game({
@@ -124,10 +127,12 @@ export default function Game({
   }, []);
 
   return (
-    <FlexColumn className="game">
+    <>
       <History games={games} />
-      <div>
-        {connection ? (
+      <ConnectionRow>
+        {type === GameType.LOCAL ? (
+          <span className="connected">Local</span>
+        ) : connection ? (
           connection.status === "ERROR" ? (
             <span className="error">Error</span>
           ) : connection.status === "CLOSED" ? (
@@ -146,38 +151,35 @@ export default function Game({
             })}`}</code>
           </>
         )}
-      </div>
-
-      <Main className="board-container">
-        <ScoreRow>
-          <div className="turn">
-            {winner ? (
-              <span className={winner}>
-                {winner === Player.NONE
-                  ? "Draw"
-                  : winner === playerId
-                  ? "You win"
-                  : "You lose"}
-              </span>
-            ) : (
-              <span className={player}>
-                {player === playerId ? "Your turn" : "Opponent's turn"}
-              </span>
-            )}
-          </div>
-          <div className="score">
-            <span className="x">{score[Player.X]}</span>
-            <span>-</span>
-            <span className="o">{score[Player.O]}</span>
-          </div>
-        </ScoreRow>
-        <Board tiles={tiles} winner={winner} processTurn={doTurn} />
-        {winner && (
-          <button className="continue" onClick={processReset}>
-            Again
-          </button>
-        )}
-      </Main>
-    </FlexColumn>
+      </ConnectionRow>
+      <ScoreRow>
+        <div className="turn">
+          {winner ? (
+            <span className={winner}>
+              {winner === Player.NONE
+                ? "Draw"
+                : winner === playerId
+                ? "You win"
+                : "You lose"}
+            </span>
+          ) : (
+            <span className={player}>
+              {player === playerId ? "Your turn" : "Opponent's turn"}
+            </span>
+          )}
+        </div>
+        <div className="score">
+          <span className="x">{score[Player.X]}</span>
+          <span>-</span>
+          <span className="o">{score[Player.O]}</span>
+        </div>
+      </ScoreRow>
+      <Board tiles={tiles} winner={winner} processTurn={doTurn} />
+      {winner && (
+        <button className="continue" onClick={processReset}>
+          Again
+        </button>
+      )}
+    </>
   );
 }

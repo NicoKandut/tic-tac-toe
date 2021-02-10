@@ -4,8 +4,8 @@ import styled from "styled-components";
 import data from "./DarkModeAnimationData";
 
 const NightToggleContainer = styled.div`
-  height: 24px;
-  width: 24px;
+  height: 50px;
+  width: 50px;
 
   :hover {
     .paintable {

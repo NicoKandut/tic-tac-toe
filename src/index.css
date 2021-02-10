@@ -23,8 +23,8 @@ body {
   --text1: #000000;
   --text2: #d3d3d3;
   --shadow: #808080;
-  --tile1: #dac0a0;
-  --tile2: #b6a086;
+  --tile1: hsl(33, 44%, 74%);
+  --tile2: hsl(33, 25%, 62%);
 
   background-color: var(--bg1);
   color: var(--text1);
@@ -35,11 +35,11 @@ body {
 body.dark {
   --bg1: #111111;
   --bg2: #222222;
-  --text1: #dddddd;
+  --text1: #efefef;
   --text2: #393939;
   --shadow: #444444;
-  --tile1: #63584b;
-  --tile2: #443b31;
+  --tile1: hsl(33, 20%, 44%);
+  --tile2: hsl(33, 17%, 38%);
 }
 
 code {

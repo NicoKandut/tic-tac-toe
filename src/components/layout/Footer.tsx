@@ -7,7 +7,6 @@ const FooterGrid = styled.footer`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 5px;
-  margin-bottom: ${theme.gap};
   color: var(--text2);
 
   div {
