@@ -4,7 +4,6 @@ import Tile from "./Tile";
 import Mark from "./Mark";
 import styled, { css } from "styled-components";
 import theme from "./common/theme";
-import FlexRow from "./common/FlexRow";
 
 interface BoardProps {
   tiles: Player[];
@@ -12,16 +11,12 @@ interface BoardProps {
   winner: Player | null;
 }
 
-const Wrapper = styled(FlexRow)`
-  position: relative;
-  place-content: center;
-`;
-
 const BoardGrid = styled.div`
   max-height: 100%;
   max-width: 100%;
   height: 100%;
   aspect-ratio: 1/1;
+  margin: auto;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -33,14 +28,11 @@ const BoardGrid = styled.div`
 
 const Overlay = styled.div(
   ({ winner }: Pick<BoardProps, "winner">) => css`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    ${winner
+    grid-row: 1/4;
+    grid-column: 1/4;
+    min-width: 100%;
+    min-height: 100%;
+    background: ${winner
       ? { x: theme.semiRed, o: theme.semiBlue, none: theme.semiYellow }[winner]
       : ""};
   `
@@ -58,18 +50,10 @@ const DrawText = styled.span`
 
 export default function Board({ tiles, processTurn, winner }: BoardProps) {
   return (
-    <Wrapper className="wrapper">
-      <BoardGrid className="board">
-        {tiles.map((tile, index) => (
-          <Tile
-            key={index}
-            mark={tile}
-            index={index}
-            processTurn={processTurn}
-          />
-        ))}
-      </BoardGrid>
-
+    <BoardGrid className="board">
+      {tiles.map((tile, index) => (
+        <Tile key={index} mark={tile} index={index} processTurn={processTurn} />
+      ))}
       {winner && (
         <Overlay winner={winner}>
           {winner === Player.NONE ? (
@@ -79,6 +63,6 @@ export default function Board({ tiles, processTurn, winner }: BoardProps) {
           )}
         </Overlay>
       )}
-    </Wrapper>
+    </BoardGrid>
   );
 }

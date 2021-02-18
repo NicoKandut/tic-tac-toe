@@ -5,9 +5,9 @@ import Board from "./Board";
 import PlaceholderMessage from "./common/PlaceholderMessage";
 import ScrollableFlexRow from "./common/ScrollableFlexRow";
 
-const NO_OP = () => {};
+export const NO_OP = () => {};
 
-const HistoryBoardWrapper = styled.div`
+export const HistoryBoardWrapper = styled.div`
   width: 100px;
   height: 100px;
   display: flex;

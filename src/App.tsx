@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import FlexColumn from "./components/common/FlexColumn";
 import styled from "styled-components";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -8,6 +7,8 @@ import Welcome from "./components/pages/Welcome";
 import theme from "./components/common/theme";
 import Versus from "./components/pages/Versus";
 import Local from "./components/pages/Local";
+import Computer from "./components/pages/Computer";
+import Test from "./components/pages/Test";
 
 const AppLayout = styled.div`
   display: grid;
@@ -31,6 +32,13 @@ function App() {
           </Route>
           <Route path={`/versus`}>
             <Versus />
+          </Route>
+          <Route path={`/computer`}>
+            <Computer />
+          </Route>
+
+          <Route path={`/test`}>
+            <Test />
           </Route>
           <Route path={`/`}>
             <Welcome />

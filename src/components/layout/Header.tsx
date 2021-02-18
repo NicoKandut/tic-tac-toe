@@ -61,6 +61,7 @@ export default function Header() {
             Online Versus
           </Link>
           <Link to="/local">Local Versus</Link>
+          <Link to="/computer">Computer Versus</Link>
         </nav>
       </div>
       <DarkModeButton />

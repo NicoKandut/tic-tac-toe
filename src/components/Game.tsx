@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import FlexRow from "./common/FlexRow";
+import Connection from "../@types/Connection";
+import { getBestMove } from "../main/computer";
 import { getWinner } from "../main/gameLogic";
+import GameType from "../main/GameType";
 import Instruction, { ControlInstruction } from "../main/Instruction";
 import { stringify } from "../main/invite";
 import Player, { inverseOf } from "../main/Player";
 import Board from "./Board";
-import History from "./History";
-
+import FlexRow from "./common/FlexRow";
+import Evaluation from "./Evaluation";
 import "./Game.css";
-import Connection from "../@types/Connection";
-import GameType from "../main/GameType";
+import History from "./History";
 
 const ScoreRow = styled(FlexRow)`
   justify-content: space-between;
@@ -57,7 +58,7 @@ export default function Game({
 
   const doTurn = useCallback(
     (index: number, shouldSend: boolean | undefined) => {
-      if ((connection && player === playerId) || type === GameType.LOCAL) {
+      if ((connection && player === playerId) || type !== GameType.VERSUS) {
         processTurn(index, shouldSend);
       }
     },
@@ -126,12 +127,20 @@ export default function Game({
     }
   }, []);
 
+  useEffect(() => {
+    if (type === GameType.COMPUTER && player === Player.O && !winner) {
+      doTurn(getBestMove(tiles, player), false);
+    }
+  }, [doTurn, player, tiles, type, winner]);
+
   return (
     <>
       <History games={games} />
       <ConnectionRow>
         {type === GameType.LOCAL ? (
           <span className="connected">Local</span>
+        ) : type === GameType.COMPUTER ? (
+          <span className="connected">Computer</span>
         ) : connection ? (
           connection.status === "ERROR" ? (
             <span className="error">Error</span>
@@ -168,6 +177,7 @@ export default function Game({
             </span>
           )}
         </div>
+        <Evaluation tiles={tiles} player={player} />
         <div className="score">
           <span className="x">{score[Player.X]}</span>
           <span>-</span>

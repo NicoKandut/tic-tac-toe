@@ -19,7 +19,7 @@ export default function Tile({
   }, [index, mark, processTurn]);
 
   return (
-    <AlternatingBgCell onClick={onClick}>
+    <AlternatingBgCell onClick={onClick} index={index}>
       {mark !== Player.NONE && <Mark type={mark} />}
     </AlternatingBgCell>
   );
