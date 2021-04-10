@@ -1,18 +1,28 @@
 import { getWinner } from "./gameLogic";
 import Player, { inverseOf } from "./Player";
 
-function prettyBoard(board: Player[]) {
-  return board
-    .map((value) => (value === "none" ? " " : value))
-    .reduce(
-      (result, value, index) => result + value + (index % 3 === 2 ? "\n" : ""),
-      "\n"
-    );
+let outcomes = {
+  [Player.X]: 0,
+  [Player.O]: 0,
+  [Player.NONE]: 0,
+};
+
+export function resetOutcomes() {
+  outcomes = {
+    [Player.X]: 0,
+    [Player.O]: 0,
+    [Player.NONE]: 0,
+  };
 }
 
-export function getBestMove(tiles: Player[], player: Player) {
+export function getOutcomes() {
+  return outcomes;
+}
+
+export function getBestMoves(tiles: Player[], player: Player) {
   let bestRating = -2;
-  let bestIndex = -1;
+  let bestIndex = [-1];
+  resetOutcomes();
 
   tiles.forEach((value, index) => {
     if (value === Player.NONE) {
@@ -23,7 +33,9 @@ export function getBestMove(tiles: Player[], player: Player) {
 
       if (rating > bestRating) {
         bestRating = rating;
-        bestIndex = index;
+        bestIndex = [index];
+      } else if (rating === bestRating) {
+        bestIndex.push(index);
       }
     }
   });
@@ -33,6 +45,10 @@ export function getBestMove(tiles: Player[], player: Player) {
 
 export function evaluateBoard(tiles: Player[], player: Player): number {
   const winner = getWinner(tiles);
+
+  if (winner) {
+    outcomes[winner]++;
+  }
 
   if (winner === player) {
     return 1;
@@ -45,8 +61,6 @@ export function evaluateBoard(tiles: Player[], player: Player): number {
   if (winner === Player.NONE) {
     return 0;
   }
-
-  // Not finished
 
   return getPossibleBoards(tiles, player).reduce((maxRating, board) => {
     const opponent = inverseOf(player);

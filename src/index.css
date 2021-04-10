@@ -8,8 +8,7 @@ body,
   box-sizing: border-box;
 }
 
-body,
-h1 {
+body {
   margin: 0;
 }
 

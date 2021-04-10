@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Connection from "../@types/Connection";
-import { getBestMove } from "../main/computer";
+import { getBestMoves, getOutcomes } from "../main/computer";
 import { getWinner } from "../main/gameLogic";
 import GameType from "../main/GameType";
 import Instruction, { ControlInstruction } from "../main/Instruction";
@@ -38,6 +38,8 @@ export default function Game({
   const [games, setGames] = useState(new Array<[Player, Array<Player>]>());
   const [winner, setWinner] = useState<Player | null>(null);
   const [player, setPlayer] = useState(Player.X);
+
+  const outcomes = useMemo(getOutcomes, [player]);
 
   const processTurn = useCallback(
     (index, shouldSend: boolean | undefined) => {
@@ -129,7 +131,12 @@ export default function Game({
 
   useEffect(() => {
     if (type === GameType.COMPUTER && player === Player.O && !winner) {
-      doTurn(getBestMove(tiles, player), false);
+      const goodMoves = getBestMoves(tiles, player);
+
+      doTurn(
+        goodMoves[Math.trunc(Math.random() * 1000) % goodMoves.length],
+        false
+      );
     }
   }, [doTurn, player, tiles, type, winner]);
 
@@ -177,7 +184,7 @@ export default function Game({
             </span>
           )}
         </div>
-        <Evaluation tiles={tiles} player={player} />
+        <Evaluation outcomes={outcomes} />
         <div className="score">
           <span className="x">{score[Player.X]}</span>
           <span>-</span>

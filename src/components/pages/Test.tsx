@@ -1,5 +1,5 @@
 import React from "react";
-import { getBestMove } from "../../main/computer";
+import { getBestMoves } from "../../main/computer";
 import { getWinner } from "../../main/gameLogic";
 import Player from "../../main/Player";
 import Board from "../Board";
@@ -22,8 +22,8 @@ export default function Test() {
   return (
     <FlexColumn>
       <Board tiles={board} winner={getWinner(board)} processTurn={NO_OP} />
-      <span>Best Move for O</span>
-      <span>{getBestMove(board, Player.O)}</span>
+      <span>Best Moves for O</span>
+      <span>{getBestMoves(board, Player.O).join(", ")}</span>
     </FlexColumn>
   );
 }
